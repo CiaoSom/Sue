@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<div id="app">
+	<input type="" name="" s-model="message.a">
+	<div>{{message.a}}</div>
+	<ul><li></li><li></li></ul>	
+	{{message.a}}
+</div>
+<script type="text/javascript" src="compile.js"></script>
+<script type="text/javascript" src="sue.js"></script>
+<script type="text/javascript">
+	let vm = new Sue({
+		el:'#app',
+		data:{
+			message:{
+				a:'123'
+			}
+		}
+	})
+</script>
+</body>
+</html>
