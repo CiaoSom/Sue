@@ -1,3 +1,14 @@
-# Es6NodePlatform
+# Sue
 
-一款简单的支持代码变动自动刷新的应用，适合做一些简单的ES6方面的小demo
+yarn 
+
+npm run dev
+
+开启项目
+
+模仿Vue实现的一款MVVM框架
+已经实现
+--模板编译
+未实现
+--数据劫持
+--watcher
