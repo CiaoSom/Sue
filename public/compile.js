@@ -14,18 +14,15 @@ class Compile{
 	 */
 	compile(fragment){
 		let childNodes = fragment.childNodes;
-
 		Array.from(childNodes).forEach(node=>{
 			// console.log(node)
 			if(this.isElementNode(node)){
 				// 元素节点,递归深入遍历所有节点
-
 				this.compileElement(node)
 				this.compile(node)
 			}else{
 				// 文本节点
-				this.compileText(node)
-			
+				this.compileText(node)	
 			}
 		})
 
@@ -105,6 +102,15 @@ CompileUtil={
 			return prev[next];
 		},vm.$data)
 	},
+	setValue(vm,expr,value){
+		expr = expr.split('.')
+		return expr.reduce((prev,next,currentIndex)=>{
+			if(currentIndex===expr.length-1){
+				return prev[next]=value
+			}
+			return prev[next]
+		},vm.$data)
+	},
 	exprToValue(vm,expr){
 		return expr.replace(/\{\{([^}]+)\}\}/g,(...arguments)=>{
 			return this.getVal(vm,arguments[1])
@@ -113,10 +119,25 @@ CompileUtil={
 	text(node,vm,expr){
 		let updateFn = this.updater['textUpdate']
 		let value = this.exprToValue(vm,expr)
+		// console.log(expr)
+		expr.replace(/\{\{([^}]+)\}\}/g,(...arguments)=>{
+			// console.log(arguments[1])
+			new Watcher(vm,arguments[1],newValue=>{
+			
+				updateFn && updateFn(node, newValue);
+			})
+		})
 		updateFn && updateFn(node,value);
 	},
 	model(node,vm,expr){
 		let updateFn = this.updater['modelUpdate']
+		new Watcher(vm,expr,newValue=>{
+			updateFn && updateFn(node, newValue);
+		})
+		node.addEventListener('input',e=>{
+			let newValue=e.target.value
+			this.setValue(vm,expr,newValue)
+		})
 		updateFn && updateFn(node,this.getVal(vm,expr));
 	},
 	updater:{
