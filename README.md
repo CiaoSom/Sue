@@ -9,6 +9,5 @@ npm run dev
 模仿Vue实现的一款MVVM框架
 已经实现
 --模板编译
-未实现
 --数据劫持
 --watcher
